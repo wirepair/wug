@@ -51,3 +51,25 @@ func TestForecast(t *testing.T) {
 
 	t.Logf("%#v\n", data)
 }
+
+func TestHourly(t *testing.T) {
+	wug := NewWug()
+	q := NewQueryByAutoIP(testApiKey)
+	data, err := wug.GetHourly(q)
+	if err != nil {
+		t.Fatalf("error getting hourly: %s\n", err)
+	}
+
+	t.Logf("%#v\n", data)
+}
+
+func TestHourlyTenDay(t *testing.T) {
+	wug := NewWug()
+	q := NewQueryByAutoIP(testApiKey)
+	data, err := wug.GetHourlyTenDay(q)
+	if err != nil {
+		t.Fatalf("error getting hourly: %s\n", err)
+	}
+
+	t.Logf("%#v\n", data.Hourly)
+}
