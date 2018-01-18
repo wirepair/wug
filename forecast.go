@@ -1,5 +1,6 @@
 package wug
 
+// ForecastDay returns a forecast for a day
 type ForecastDay struct {
 	Date struct {
 		Epoch          string `json:"epoch"`
@@ -75,6 +76,7 @@ type ForecastDay struct {
 	Minhumidity int `json:"minhumidity"`
 }
 
+// TxtForecastDay text representation of a day of forecast information
 type TxtForecastDay struct {
 	Period        int    `json:"period"`
 	Icon          string `json:"icon"`
@@ -85,15 +87,18 @@ type TxtForecastDay struct {
 	Pop           string `json:"pop"`
 }
 
+// TxtForecast contains date and TxtForecastday
 type TxtForecast struct {
 	Date           string           `json:"date"`
 	TxtForecastday []TxtForecastDay `json:"forecastday"`
 }
 
+// SimpleForecast contains the forecast information for N days
 type SimpleForecast struct {
 	Forecastday []ForecastDay `json:"forecastday"`
 }
 
+// ForecastData contains the Textforecast and Simpleforecast information.
 type ForecastData struct {
 	Textforecast   TxtForecast    `json:"txt_forecast"`
 	Simpleforecast SimpleForecast `json:"simpleforecast"`

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// The type of query to build
+// QueryType of query to build
 type QueryType int
 
 // The query type definitions (how to search)
@@ -31,12 +31,14 @@ var queryFormats = map[QueryType]string{
 	IPGeo:       "/autoip.json?geo_ip=%s",
 }
 
+// Query used for the Wug client
 type Query struct {
 	apiKey     string
 	queryType  QueryType
 	queryValue string
 }
 
+// NewQueryByPwsID query by pws id, pwsID does not need the leading pws: string
 func NewQueryByPwsID(apiKey string, pwsID string) *Query {
 	return &Query{
 		apiKey:     apiKey,
@@ -45,6 +47,8 @@ func NewQueryByPwsID(apiKey string, pwsID string) *Query {
 	}
 }
 
+// NewQueryByUsStateCity query by US state and city, replaces spaces with _ and
+// upper cases the state.
 func NewQueryByUsStateCity(apiKey string, state, city string) *Query {
 	state = strings.Replace(state, " ", "_", -1)
 	state = strings.ToUpper(state)
@@ -57,6 +61,7 @@ func NewQueryByUsStateCity(apiKey string, state, city string) *Query {
 	}
 }
 
+// NewQueryByUsZip query by US zip code
 func NewQueryByUsZip(apiKey string, zip string) *Query {
 	return &Query{
 		apiKey:     apiKey,
@@ -65,6 +70,7 @@ func NewQueryByUsZip(apiKey string, zip string) *Query {
 	}
 }
 
+// NewQueryByCountryCity query by country and city.
 func NewQueryByCountryCity(apiKey string, country, city string) *Query {
 	country = strings.Replace(country, " ", "_", -1)
 	city = strings.Replace(city, " ", "_", -1)
@@ -76,6 +82,7 @@ func NewQueryByCountryCity(apiKey string, country, city string) *Query {
 	}
 }
 
+// NewQueryByLatLong query by latitude and longitude.
 func NewQueryByLatLong(apiKey string, latitude, longitude string) *Query {
 	return &Query{
 		apiKey:     apiKey,
@@ -84,6 +91,7 @@ func NewQueryByLatLong(apiKey string, latitude, longitude string) *Query {
 	}
 }
 
+// NewQueryByAirportCode query by airport code
 func NewQueryByAirportCode(apiKey string, airport string) *Query {
 	return &Query{
 		apiKey:     apiKey,
@@ -92,6 +100,8 @@ func NewQueryByAirportCode(apiKey string, airport string) *Query {
 	}
 }
 
+// NewQueryByAutoIP query by geolocating the requester IP address and using
+// the closest station.
 func NewQueryByAutoIP(apiKey string) *Query {
 	return &Query{
 		apiKey:     apiKey,
@@ -100,6 +110,8 @@ func NewQueryByAutoIP(apiKey string) *Query {
 	}
 }
 
+// NewQueryByIPGeo query by geolocating the provided IP address and using
+// the closest station.
 func NewQueryByIPGeo(apiKey string, ipAddress string) *Query {
 	return &Query{
 		apiKey:     apiKey,
@@ -108,6 +120,7 @@ func NewQueryByIPGeo(apiKey string, ipAddress string) *Query {
 	}
 }
 
-func (q *Query) Format(requestUrl string) string {
-	return fmt.Sprintf(requestUrl, q.queryValue)
+// Format the requestURL for the query with the query value.
+func (q *Query) Format(requestURL string) string {
+	return fmt.Sprintf(requestURL, q.queryValue)
 }

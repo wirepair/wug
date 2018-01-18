@@ -9,16 +9,19 @@ import (
 	"time"
 )
 
-const requestUrl = "http://api.wunderground.com/api/%s/%s/q/%s"
+// The weather underground API format string
+const requestURL = "http://api.wunderground.com/api/%s/%s/q/%s"
 
+// RequestType that is supported for weather underground requests
 type RequestType int
 
+// RequestType constants
 const (
-	Cond RequestType = iota
-	Fore
-	ForeTenDay
-	Hour
-	HourTenDay
+	Cond       RequestType = iota // Conditions request
+	Fore                          // Forecast request
+	ForeTenDay                    // Ten Day Forecast request
+	Hour                          // Hourly request
+	HourTenDay                    // Ten Day Hourly request
 )
 
 var requestMap = map[RequestType]string{
@@ -29,10 +32,12 @@ var requestMap = map[RequestType]string{
 	HourTenDay: "hourly10day",
 }
 
+// Wug API client that uses Query's to request data from weather underground
 type Wug struct {
-	client *http.Client
+	Client *http.Client
 }
 
+// NewWug returns a Wug client with a configured http.Client and transport.
 func NewWug() *Wug {
 	var tr = &http.Transport{
 		MaxIdleConns:          10,
@@ -45,17 +50,15 @@ func NewWug() *Wug {
 		}).DialContext,
 	}
 	var client = &http.Client{Transport: tr}
-	return &Wug{client: client}
+	return &Wug{Client: client}
 }
 
-func (w *Wug) SetClient(client *http.Client) {
-	w.client = client
-}
-
+// GetRawConditions returns the raw bytes of a conditions request
 func (w *Wug) GetRawConditions(query *Query) ([]byte, error) {
 	return w.Get(Cond, query)
 }
 
+// GetConditions returns the Conditions of the request
 func (w *Wug) GetConditions(query *Query) (*Conditions, error) {
 	data, err := w.GetRawConditions(query)
 	if err != nil {
@@ -70,10 +73,12 @@ func (w *Wug) GetConditions(query *Query) (*Conditions, error) {
 	return conditions, nil
 }
 
+// GetRawHourly returns the raw bytes of an hourly request
 func (w *Wug) GetRawHourly(query *Query) ([]byte, error) {
 	return w.Get(Hour, query)
 }
 
+// GetHourly returns the Hourly data.
 func (w *Wug) GetHourly(query *Query) (*Hourly, error) {
 	data, err := w.GetRawHourly(query)
 	if err != nil {
@@ -88,10 +93,12 @@ func (w *Wug) GetHourly(query *Query) (*Hourly, error) {
 	return hourly, nil
 }
 
+// GetRawHourlyTenDay returns the raw bytes of an hourly ten day request
 func (w *Wug) GetRawHourlyTenDay(query *Query) ([]byte, error) {
 	return w.Get(HourTenDay, query)
 }
 
+// GetHourlyTenDay returns the HourlyTenDay
 func (w *Wug) GetHourlyTenDay(query *Query) (*HourlyTenDay, error) {
 	data, err := w.GetRawHourlyTenDay(query)
 	if err != nil {
@@ -106,10 +113,12 @@ func (w *Wug) GetHourlyTenDay(query *Query) (*HourlyTenDay, error) {
 	return hourly, nil
 }
 
+// GetRawForecast returns the raw bytes of a forecast request
 func (w *Wug) GetRawForecast(query *Query) ([]byte, error) {
 	return w.Get(Fore, query)
 }
 
+// GetForecast returns the Forecast
 func (w *Wug) GetForecast(query *Query) (*Forecast, error) {
 	data, err := w.GetRawForecast(query)
 	if err != nil {
@@ -124,10 +133,12 @@ func (w *Wug) GetForecast(query *Query) (*Forecast, error) {
 	return forecast, nil
 }
 
+// GetRawForecastTenDay returns the raw bytes of a ten day forecast request
 func (w *Wug) GetRawForecastTenDay(query *Query) ([]byte, error) {
 	return w.Get(ForeTenDay, query)
 }
 
+// GetForecastTenDay returns the ForecastTenDay
 func (w *Wug) GetForecastTenDay(query *Query) (*ForecastTenDay, error) {
 	data, err := w.GetRawForecastTenDay(query)
 	if err != nil {
@@ -142,9 +153,10 @@ func (w *Wug) GetForecastTenDay(query *Query) (*ForecastTenDay, error) {
 	return forecast, nil
 }
 
+// Get returns the raw bytes of a request type given the provided Query.
 func (w *Wug) Get(requestType RequestType, query *Query) ([]byte, error) {
-	request := fmt.Sprintf(requestUrl, query.apiKey, requestMap[requestType], query.queryValue)
-	resp, err := w.client.Get(request)
+	request := fmt.Sprintf(requestURL, query.apiKey, requestMap[requestType], query.queryValue)
+	resp, err := w.Client.Get(request)
 	if err != nil {
 		return nil, err
 	}

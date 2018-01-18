@@ -1,5 +1,6 @@
 package wug
 
+// FCTTIME contains time related information inside responses
 type FCTTIME struct {
 	Hour                   string `json:"hour"`
 	HourPadded             string `json:"hour_padded"`

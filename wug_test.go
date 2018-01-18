@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-var testApiKey string
+var testAPIKey string
 
 func init() {
-	testApiKey = os.Getenv("WUGKEY")
+	testAPIKey = os.Getenv("WUGKEY")
 }
 
 func TestRawConditions(t *testing.T) {
 	wug := NewWug()
-	q := NewQueryByAutoIP(testApiKey)
+	q := NewQueryByAutoIP(testAPIKey)
 	data, err := wug.GetRawConditions(q)
 	if err != nil {
 		t.Fatalf("error getting conditions: %s\n", err)
@@ -28,7 +28,7 @@ func TestRawConditions(t *testing.T) {
 
 func TestRawForecast(t *testing.T) {
 	wug := NewWug()
-	q := NewQueryByAutoIP(testApiKey)
+	q := NewQueryByAutoIP(testAPIKey)
 	data, err := wug.GetRawForecast(q)
 	if err != nil {
 		t.Fatalf("error getting conditions: %s\n", err)
@@ -43,7 +43,7 @@ func TestRawForecast(t *testing.T) {
 
 func TestForecast(t *testing.T) {
 	wug := NewWug()
-	q := NewQueryByAutoIP(testApiKey)
+	q := NewQueryByAutoIP(testAPIKey)
 	data, err := wug.GetForecast(q)
 	if err != nil {
 		t.Fatalf("error getting forecast: %s\n", err)
@@ -54,7 +54,7 @@ func TestForecast(t *testing.T) {
 
 func TestHourly(t *testing.T) {
 	wug := NewWug()
-	q := NewQueryByAutoIP(testApiKey)
+	q := NewQueryByAutoIP(testAPIKey)
 	data, err := wug.GetHourly(q)
 	if err != nil {
 		t.Fatalf("error getting hourly: %s\n", err)
@@ -65,7 +65,7 @@ func TestHourly(t *testing.T) {
 
 func TestHourlyTenDay(t *testing.T) {
 	wug := NewWug()
-	q := NewQueryByAutoIP(testApiKey)
+	q := NewQueryByAutoIP(testAPIKey)
 	data, err := wug.GetHourlyTenDay(q)
 	if err != nil {
 		t.Fatalf("error getting hourly: %s\n", err)
@@ -76,7 +76,7 @@ func TestHourlyTenDay(t *testing.T) {
 
 func TestHourlyTenDayLatLong(t *testing.T) {
 	wug := NewWug()
-	q := NewQueryByLatLong(testApiKey, "35.350178", "139.623993")
+	q := NewQueryByLatLong(testAPIKey, "35.350178", "139.623993")
 	_, err := wug.GetHourlyTenDay(q)
 	if err != nil {
 		t.Fatalf("error getting hourly: %s\n", err)
