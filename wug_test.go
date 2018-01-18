@@ -73,3 +73,12 @@ func TestHourlyTenDay(t *testing.T) {
 
 	t.Logf("%#v\n", data.Hourly)
 }
+
+func TestHourlyTenDayLatLong(t *testing.T) {
+	wug := NewWug()
+	q := NewQueryByLatLong(testApiKey, "35.350178", "139.623993")
+	_, err := wug.GetHourlyTenDay(q)
+	if err != nil {
+		t.Fatalf("error getting hourly: %s\n", err)
+	}
+}

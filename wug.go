@@ -93,7 +93,7 @@ func (w *Wug) GetRawHourlyTenDay(query *Query) ([]byte, error) {
 }
 
 func (w *Wug) GetHourlyTenDay(query *Query) (*HourlyTenDay, error) {
-	data, err := w.GetRawHourly(query)
+	data, err := w.GetRawHourlyTenDay(query)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (w *Wug) GetRawForecastTenDay(query *Query) ([]byte, error) {
 }
 
 func (w *Wug) GetForecastTenDay(query *Query) (*ForecastTenDay, error) {
-	data, err := w.GetRawForecast(query)
+	data, err := w.GetRawForecastTenDay(query)
 	if err != nil {
 		return nil, err
 	}
